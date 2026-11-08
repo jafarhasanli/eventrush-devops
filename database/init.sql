@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS reservations (
     UNIQUE (event_id, customer_email)
 );
 
-INSERT INTO events (id, title, capacity, available_tickets)
-VALUES (1, 'Demo Concert', 100, 100)
-ON CONFLICT (id) DO NOTHING;
+INSERT INTO events (title, capacity, available_tickets)
+SELECT 'Demo Concert', 100, 100
+WHERE NOT EXISTS (
+    SELECT 1 FROM events WHERE title = 'Demo Concert'
+);
