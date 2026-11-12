@@ -2,7 +2,7 @@
 variable "aws_region" {
   description = "AWS region for EventRush development"
   type        = string
-  default     = "eu-central-1"
+  default     = "eu-north-1"
 }
 
 variable "project_name" {
