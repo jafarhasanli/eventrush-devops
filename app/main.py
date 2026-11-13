@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.database import check_database, get_engine
 
-app = FastAPI(title="EventRush API", version="0.2.0")
+app = FastAPI(title="EventRush API", version="0.2.1")
 
 
 class Event(BaseModel):
