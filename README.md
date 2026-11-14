@@ -1,41 +1,57 @@
-# EventRush — DevOps Portfolio Lab
+﻿# EventRush — AWS DevOps Portfolio Project
 
-A simulated ticketing API used to practice Docker, Linux, AWS, Terraform, CI/CD, security, and observability.
+EventRush is a simulated ticket reservation API built to demonstrate cloud infrastructure, containerization, CI/CD, observability, and disaster recovery.
 
-**Current status:** M0 starter only. Not a ticket-booking system yet; no real AWS infrastructure is created.
+## Technology Stack
 
-## Quick start (WSL/Linux)
+- Python, FastAPI, PostgreSQL
+- Docker and Docker Compose
+- AWS EC2, S3, IAM, Systems Manager
+- Terraform Infrastructure as Code
+- GitHub Actions and GitHub Container Registry
+- Linux, Bash, systemd
+- Telegram monitoring alerts
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m pytest -q
-uvicorn app.main:app --reload
-```
+## Architecture
 
-Open http://127.0.0.1:8000/docs or call `curl http://127.0.0.1:8000/health`.
+GitHub -> GitHub Actions -> GHCR -> EC2 -> Docker -> FastAPI -> PostgreSQL
 
-## Docker
+PostgreSQL -> Daily Backup -> AWS S3
 
-```bash
-docker compose up -d --build
-curl http://127.0.0.1:8000/events
-docker compose down
-```
+Health Check / Deployment / Backup Failure -> Telegram Alerts
 
-## CI
+## Implemented Features
 
-`.github/workflows/ci.yml` runs Python tests, then builds the Docker image on push to `main` and on pull requests. It does not publish or deploy anything yet.
+- REST API for events and ticket reservations
+- PostgreSQL persistence and duplicate booking protection
+- Automated tests and Docker image publishing
+- EC2 deployment through systemd and GHCR
+- Automated health checks
+- Telegram failure notifications
+- Daily PostgreSQL backups
+- Private, encrypted, versioned S3 backup storage
+- S3 lifecycle retention policies
+- Successfully tested database recovery from S3
+- Successfully tested container deployment rollback
+- IAM least-privilege permissions
+- EC2 access through AWS Systems Manager
 
-## Architecture (M0)
+## Verification
 
-Browser -> localhost:8000 -> Docker container -> FastAPI; example event data is in memory.
+- CI and image publishing passed
+- API and database health checks passed
+- Database backup and S3 restoration passed
+- Isolated automatic rollback test passed
+- Terraform configuration validated
 
-## Planned features
+## Operations
 
-See [docs/ROADMAP.md](docs/ROADMAP.md). PostgreSQL, reservation operations, AWS, and Terraform are planned, not currently implemented.
+The EC2 host uses systemd services and timers for deployment, monitoring, and backups. Operational Bash scripts were configured directly on the EC2 host and are not yet fully reproducible from this repository.
 
-## Safety
+The API is bound to localhost on EC2. No public inbound access is configured.
 
-No actual payment processing. Avoid committing AWS keys, `.env`, or Terraform state. AWS resources may incur fees later.
+## Security
+
+No real payment processing. Do not commit credentials, environment files, database dumps, or Terraform state.
+
+AWS resources may incur charges. Stop or destroy unused lab infrastructure when appropriate.
